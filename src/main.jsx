@@ -5,6 +5,9 @@ import "./styles.css";
 const MAPS_URL = "https://maps.app.goo.gl/SjAinaMEUt6Tcjgt7?g_st=ic";
 const ASSET_BASE = import.meta.env.BASE_URL;
 
+// Set to false to hide the "Tap to open" text.
+const SHOW_TAP_TO_OPEN = true;
+
 function Opening({ onOpen }) {
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
@@ -15,17 +18,16 @@ function Opening({ onOpen }) {
       try {
         video.currentTime = 0;
         await video.play();
-        setPlaying(true);
       } catch {
-        setPlaying(true);
+        // If playback is blocked, keep the opening screen available for another tap.
+        return;
       }
-    } else {
-      setPlaying(true);
     }
+    setPlaying(true);
   };
 
   return (
-    <section className={`opening ${playing ? "opening--playing" : ""}`}>
+    <section className={`opening ${playing ? "opening--playing" : ""}`} onClick={!playing ? openInvitation : undefined}>
       <video
         ref={videoRef}
         className="opening__video"
@@ -34,26 +36,16 @@ function Opening({ onOpen }) {
         playsInline
         muted
         preload="metadata"
+        onPlay={() => setPlaying(true)}
         onEnded={onOpen}
         aria-hidden="true"
       />
       <div className="opening__veil" />
-      {!playing && (
-        <button className="seal-button" onClick={openInvitation} aria-label="Open wedding invitation">
-          <span className="seal-button__ornament">✦</span>
-          <span>Tap to open</span>
-          <span className="seal-button__ornament">✦</span>
-        </button>
-      )}
-      {!playing && (
-        <div className="opening__caption">
-          <span className="ornament-line" />
-          <p>YOU ARE INVITED</p>
-          <span className="ornament-line" />
+
+      {SHOW_TAP_TO_OPEN && !playing && (
+        <div className="tap-to-open" role="button" tabIndex={0} aria-label="Tap to open wedding invitation">
+          Tap to open
         </div>
-      )}
-      {playing && (
-        <button className="skip-button" onClick={onOpen}>Skip intro</button>
       )}
     </section>
   );
