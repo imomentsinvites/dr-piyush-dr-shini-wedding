@@ -1,6 +1,6 @@
 # Dr. Piyush & Dr. Shini — Wedding Invitation
 
-A mobile-first React/Vite wedding invitation designed to use the **entire mobile browser viewport** rather than a laptop/phone mockup.
+A mobile-first React/Vite wedding invitation designed to stay **full-screen portrait on phones** rather than creating a laptop-shaped mockup.
 
 ## Current details
 
@@ -10,59 +10,21 @@ A mobile-first React/Vite wedding invitation designed to use the **entire mobile
 - Venue: **Raj Vilas, Orchha, Madhya Pradesh**
 - Google Maps: https://maps.app.goo.gl/SjAinaMEUt6Tcjgt7?g_st=ic
 
-## Assets
+## Videos
 
-Put the invitation media in `public/assets/` with these exact names:
+`public/assets/opening.mp4` is the supplied 1080×1920 opening video.
 
-```text
-opening.mp4
-background.mp4
-music.mp3        (optional)
-opening-poster.jpg
-```
+The website expects the second, behind-the-text video at:
 
-The supplied opening video is already included as `opening.mp4`.
+`public/assets/background.mp4`
 
-The supplied second video is already included as `background.mp4`.
+Put your second 9:16 video there before building.
 
-### Opening video
-
-The opening video is 1080×1920 portrait. It plays once after the visitor taps **Tap to open**. The tap is intentional because mobile browsers commonly restrict video/audio playback until there is a user gesture.
-
-### Background video
-
-The supplied second video is 1080×1920 portrait. It is used behind the invitation text and:
-
-- loops continuously;
-- uses `object-fit: cover`, so it is never stretched;
-- is slightly enlarged to prevent blur edges from showing;
-- is softened with CSS blur;
-- is darkened with a layered overlay for readable text;
-- loads after the opening experience rather than competing with it.
-
-When the 10-second video reaches the end, the browser loops it automatically.
-
-## Music
-
-Music is optional. If `public/assets/music.mp3` exists, it starts when the visitor taps **Tap to open** and loops throughout the invitation.
-
-To change the music later, simply replace:
-
-```text
-public/assets/music.mp3
-```
-
-with another MP3 **using the same filename**. No React code needs to be changed.
-
-There is also a small Music on/off button in the hero. If no `music.mp3` is present, that button automatically stays hidden and the invitation still works normally.
-
-## Scratch-to-reveal wedding date
-
-The invitation includes a touch-friendly canvas scratch card. Visitors scratch the gold foil to reveal:
-
-**FRIDAY · 4 · DECEMBER 2026**
-
-It works with touch, mouse, and pointer input and does not require a third-party scratch-card library.
+The background video is intentionally:
+- `object-fit: cover` — it fills the phone viewport without stretching.
+- Slightly enlarged — prevents blurred edges from the CSS blur.
+- `filter: blur(7px) brightness(.53)` — creates the dark/soft background seen in the reference.
+- `preload="none"` — it does not compete with the opening experience for the first network request.
 
 ## Run locally
 
@@ -71,9 +33,9 @@ npm install
 npm run dev
 ```
 
-Then open the Vite local URL. For testing on a phone on the same Wi-Fi network, use the LAN URL printed by Vite.
+Then open the Vite local URL on your phone or use the browser's network/LAN URL.
 
-## Build
+## Build for GitHub Pages / Vercel / Netlify
 
 ```bash
 npm run build
@@ -81,27 +43,46 @@ npm run build
 
 The production files are created in `dist/`.
 
-## Git / deployment
+## Important mobile behavior
 
-This is a standard Vite project and can be pushed directly to GitHub. It can be deployed to Vercel, Netlify, GitHub Pages, or another static host that supports Vite builds.
+There is no fixed 9:16 device frame and no desktop-style centered phone mockup.
 
-For GitHub Pages with a repository path, configure the Vite `base` setting to match the repository name before deployment. Vercel and Netlify generally work with the default root configuration.
+The actual page is always:
 
-## Mobile behavior
+```css
+width: 100%;
+height: 100dvh;
+object-fit: cover;
+```
 
-There is no fixed 9:16 device frame and no desktop-style centered phone mockup. The actual page uses the browser viewport.
+This means a video is never geometrically stretched. On unusual phone aspect ratios, `cover` crops the excess edges instead, preserving the video's proportions.
 
-The videos use `object-fit: cover`, which preserves their original proportions. On phones whose aspect ratio differs from 9:16, the browser crops excess edges rather than stretching the video.
+## Scratch card
 
-Safe-area spacing is included for iPhone notches/Dynamic Island areas.
+The wedding date uses a lightweight HTML canvas scratch layer. It works with touch/pointer input and reveals:
+
+**FRIDAY · 4 · DECEMBER 2026**
+
+No third-party scratch-card library is required.
+
+## Customizing event names/times
+
+The event cards are in `src/main.jsx`. Replace the two descriptions with the actual Haldi / Engagement / Mehendi / etc. schedule when ready.
 
 ## Performance notes
 
-- React + Vite with no UI framework.
+- React + Vite, no UI framework.
 - No external font dependency.
-- Opening video: 1080×1920 MP4.
-- Background video: 1080×1920 MP4, ~7 MB supplied file.
-- Background video is loaded only when the invitation opens.
-- Background video loops natively rather than downloading separate copies.
-- Music is lazy-loaded only when the invitation is opened.
-- No scratch-card dependency.
+- Opening video is 1080×1920 and used with `playsInline`.
+- Background video is lazy-loaded with `preload="none"`.
+- The opening has a poster image so the first visual can appear before the video has downloaded.
+
+## GitHub Pages deployment
+
+This project is configured for the repository `dr-piyush-dr-shini-wedding`.
+
+- Vite base path: `/dr-piyush-dr-shini-wedding/`
+- GitHub Pages source: **GitHub Actions**
+- Deployment workflow: `.github/workflows/deploy.yml`
+
+Push to `main` to build and deploy automatically.
