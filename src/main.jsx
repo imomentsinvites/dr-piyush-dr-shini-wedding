@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./styles.css";
 
 const MAPS_URL = "https://maps.app.goo.gl/SjAinaMEUt6Tcjgt7?g_st=ic";
-const MUSIC_URL = "/assets/music.mp3";
+const ASSET_BASE = import.meta.env.BASE_URL;
 
 function Opening({ onOpen }) {
   const videoRef = useRef(null);
@@ -11,14 +11,16 @@ function Opening({ onOpen }) {
 
   const openInvitation = async () => {
     const video = videoRef.current;
-    setPlaying(true);
     if (video) {
       try {
         video.currentTime = 0;
         await video.play();
+        setPlaying(true);
       } catch {
-        // Some browsers can still block playback; the invitation remains usable.
+        setPlaying(true);
       }
+    } else {
+      setPlaying(true);
     }
   };
 
@@ -27,8 +29,8 @@ function Opening({ onOpen }) {
       <video
         ref={videoRef}
         className="opening__video"
-        src="/assets/opening.mp4"
-        poster="/assets/opening-poster.jpg"
+        src={`${ASSET_BASE}assets/opening.mp4`}
+        poster={`${ASSET_BASE}assets/opening-poster.jpg`}
         playsInline
         muted
         preload="metadata"
@@ -37,20 +39,22 @@ function Opening({ onOpen }) {
       />
       <div className="opening__veil" />
       {!playing && (
-        <>
-          <button className="seal-button" onClick={openInvitation} aria-label="Open wedding invitation">
-            <span className="seal-button__ornament">✦</span>
-            <span>Tap to open</span>
-            <span className="seal-button__ornament">✦</span>
-          </button>
-          <div className="opening__caption">
-            <span className="ornament-line" />
-            <p>YOU ARE INVITED</p>
-            <span className="ornament-line" />
-          </div>
-        </>
+        <button className="seal-button" onClick={openInvitation} aria-label="Open wedding invitation">
+          <span className="seal-button__ornament">✦</span>
+          <span>Tap to open</span>
+          <span className="seal-button__ornament">✦</span>
+        </button>
       )}
-      {playing && <button className="skip-button" onClick={onOpen}>Skip intro</button>}
+      {!playing && (
+        <div className="opening__caption">
+          <span className="ornament-line" />
+          <p>YOU ARE INVITED</p>
+          <span className="ornament-line" />
+        </div>
+      )}
+      {playing && (
+        <button className="skip-button" onClick={onOpen}>Skip intro</button>
+      )}
     </section>
   );
 }
@@ -60,119 +64,81 @@ function ScratchDate() {
   const canvasRef = useRef(null);
   const drawing = useRef(false);
   const last = useRef(null);
-  const revealCheck = useRef(null);
-
-  const paintFoil = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(1, Math.round(rect.width * dpr));
-    canvas.height = Math.max(1, Math.round(rect.height * dpr));
-    const ctx = canvas.getContext("2d");
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.globalCompositeOperation = "source-over";
-
-    const grad = ctx.createLinearGradient(0, 0, rect.width, rect.height);
-    grad.addColorStop(0, "#72521c");
-    grad.addColorStop(0.14, "#f4d77c");
-    grad.addColorStop(0.30, "#9c7020");
-    grad.addColorStop(0.48, "#fff0ad");
-    grad.addColorStop(0.65, "#b17f24");
-    grad.addColorStop(0.82, "#f6dc85");
-    grad.addColorStop(1, "#85611f");
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, rect.width, rect.height);
-
-    ctx.save();
-    ctx.globalAlpha = 0.14;
-    ctx.fillStyle = "#fff";
-    for (let i = -rect.height; i < rect.width + rect.height; i += 12) {
-      ctx.save();
-      ctx.translate(i, 0);
-      ctx.rotate(-0.45);
-      ctx.fillRect(0, 0, 2, rect.height * 2);
-      ctx.restore();
-    }
-    ctx.restore();
-
-    ctx.fillStyle = "rgba(44,30,12,.86)";
-    ctx.font = "600 12px Georgia, serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("SCRATCH TO REVEAL", rect.width / 2, rect.height / 2);
-  };
 
   useEffect(() => {
-    paintFoil();
-    const onResize = () => {
-      if (!scratched) paintFoil();
-    };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [scratched]);
-
-  const point = (event) => {
-    const rect = canvasRef.current.getBoundingClientRect();
-    return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
-    };
-  };
-
-  const checkReveal = () => {
-    if (revealCheck.current) return;
-    revealCheck.current = requestAnimationFrame(() => {
-      revealCheck.current = null;
-      const canvas = canvasRef.current;
-      if (!canvas) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
       const ctx = canvas.getContext("2d");
-      const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      let transparent = 0;
-      let sampled = 0;
-      for (let i = 3; i < pixels.length; i += 64) {
-        sampled += 1;
-        if (pixels[i] < 50) transparent += 1;
+      ctx.scale(dpr, dpr);
+      ctx.globalCompositeOperation = "source-over";
+      const grad = ctx.createLinearGradient(0, 0, rect.width, rect.height);
+      grad.addColorStop(0, "#8b6a25");
+      grad.addColorStop(.18, "#f6df8d");
+      grad.addColorStop(.38, "#a87922");
+      grad.addColorStop(.58, "#fff0ac");
+      grad.addColorStop(.78, "#b5842b");
+      grad.addColorStop(1, "#f1d477");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, rect.width, rect.height);
+      ctx.fillStyle = "rgba(255,255,255,.13)";
+      for (let i = -rect.height; i < rect.width + rect.height; i += 14) {
+        ctx.save();
+        ctx.translate(i, 0);
+        ctx.rotate(-0.45);
+        ctx.fillRect(0, 0, 3, rect.height * 2);
+        ctx.restore();
       }
-      if (sampled && transparent / sampled > 0.42) setScratched(true);
-    });
+      ctx.fillStyle = "rgba(44,30,12,.82)";
+      ctx.font = "600 12px Georgia, serif";
+      ctx.textAlign = "center";
+      ctx.fillText("SCRATCH TO REVEAL", rect.width / 2, rect.height / 2 + 4);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+
+  const point = (e) => {
+    const rect = canvasRef.current.getBoundingClientRect();
+    const touch = e.touches?.[0];
+    const x = (touch ? touch.clientX : e.clientX) - rect.left;
+    const y = (touch ? touch.clientY : e.clientY) - rect.top;
+    return {x,y};
   };
 
-  const scratch = (event) => {
+  const scratch = (e) => {
     if (!drawing.current || scratched) return;
-    event.preventDefault();
+    e.preventDefault();
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    const p = point(event);
+    const p = point(e);
     const prev = last.current || p;
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-
-    ctx.save();
-    ctx.scale(scaleX, scaleY);
     ctx.globalCompositeOperation = "destination-out";
-    ctx.lineWidth = 44;
+    ctx.lineWidth = 42;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.beginPath();
     ctx.moveTo(prev.x, prev.y);
     ctx.lineTo(p.x, p.y);
     ctx.stroke();
-    ctx.restore();
-
     last.current = p;
-    checkReveal();
+
+    const pixels = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    let transparent = 0;
+    for (let i=3; i<pixels.length; i+=64) if (pixels[i] < 40) transparent++;
+    if (transparent > pixels.length / 64 * 0.46) setScratched(true);
   };
 
-  const end = () => {
-    drawing.current = false;
-    last.current = null;
-  };
+  const end = () => { drawing.current = false; last.current = null; };
 
   return (
     <div className={`scratch ${scratched ? "scratch--done" : ""}`}>
-      <div className="scratch__reveal" aria-hidden={!scratched}>
+      <div className="scratch__reveal">
         <span>FRIDAY</span>
         <strong>4</strong>
         <span>DECEMBER 2026</span>
@@ -181,154 +147,93 @@ function ScratchDate() {
       {!scratched && (
         <canvas
           ref={canvasRef}
-          onPointerDown={(event) => {
-            event.currentTarget.setPointerCapture?.(event.pointerId);
-            drawing.current = true;
-            last.current = point(event);
-          }}
+          onPointerDown={(e)=>{drawing.current=true; last.current=point(e);}}
           onPointerMove={scratch}
           onPointerUp={end}
           onPointerCancel={end}
+          onPointerLeave={end}
         />
       )}
     </div>
   );
 }
 
-function MusicPlayer({ audioRef }) {
-  const [playing, setPlaying] = useState(false);
-  const [available, setAvailable] = useState(true);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    const onError = () => setAvailable(false);
-    audio.addEventListener("error", onError);
-    return () => audio.removeEventListener("error", onError);
-  }, [audioRef]);
-
-  const toggle = async () => {
-    const audio = audioRef.current;
-    if (!audio || !available) return;
-    try {
-      if (audio.paused) {
-        await audio.play();
-        setPlaying(true);
-      } else {
-        audio.pause();
-        setPlaying(false);
-      }
-    } catch {
-      setPlaying(false);
-    }
-  };
-
-  if (!available) return null;
-
-  return (
-    <button className="music-button" onClick={toggle} aria-label={playing ? "Pause music" : "Play music"}>
-      <span className={`music-button__icon ${playing ? "is-playing" : ""}`}>{playing ? "Ⅱ" : "♪"}</span>
-      <span>{playing ? "Music on" : "Music"}</span>
-    </button>
-  );
-}
-
 function App() {
   const [opened, setOpened] = useState(false);
-  const audioRef = useRef(null);
-
-  const openInvitation = () => {
-    setOpened(true);
-    const audio = audioRef.current;
-    if (audio) {
-      audio.volume = 0.48;
-      audio.currentTime = 0;
-      audio.play().catch(() => {
-        // Autoplay is allowed after a tap on most mobile browsers; if not, the music button remains available.
-      });
-    }
-  };
 
   useEffect(() => {
     document.body.classList.toggle("locked", !opened);
     return () => document.body.classList.remove("locked");
   }, [opened]);
 
+  if (!opened) return <Opening onOpen={() => setOpened(true)} />;
+
   return (
-    <>
-      <audio ref={audioRef} src={MUSIC_URL} loop preload="none" />
-      {!opened ? (
-        <Opening onOpen={openInvitation} />
-      ) : (
-        <main className="invitation">
-          <section className="hero">
-            <video
-              className="hero__video"
-              src="/assets/background.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              aria-hidden="true"
-            />
-            <div className="hero__shade" />
-            <MusicPlayer audioRef={audioRef} />
-            <div className="hero__content">
-              <p className="eyebrow">TOGETHER WITH OUR FAMILIES &amp; FRIENDS</p>
-              <div className="hero__names">
-                <h1>Dr. Piyush</h1>
-                <span>&amp;</span>
-                <h1>Dr. Shini</h1>
-              </div>
-              <p className="hero__copy">Request the pleasure of your company as we celebrate our marriage, love, and a lifetime of happiness.</p>
-              <div className="date-plaque">
-                <span>FRIDAY</span>
-                <div><small>DECEMBER</small><b>4</b><small>2026</small></div>
-                <span>THE WEDDING DAY</span>
-              </div>
-            </div>
-          </section>
+    <main className="invitation">
+      <section className="hero">
+        <video
+          className="hero__video"
+          src={`${ASSET_BASE}assets/background.mp4`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden="true"
+        />
+        <div className="hero__shade" />
+        <div className="hero__content">
+          <p className="eyebrow">TOGETHER WITH OUR FAMILIES & FRIENDS</p>
+          <div className="hero__names">
+            <h1>Dr. Piyush</h1>
+            <span>&amp;</span>
+            <h1>Dr. Shini</h1>
+          </div>
+          <p className="hero__copy">Request the pleasure of your company as we celebrate our marriage, love, and a lifetime of happiness.</p>
+          <div className="date-plaque">
+            <span>FRIDAY</span>
+            <div><small>DECEMBER</small><b>4</b><small>2026</small></div>
+            <span>AT 7 IN THE EVENING</span>
+          </div>
+        </div>
+      </section>
 
-          <section className="section section--paper">
-            <p className="eyebrow">THE CELEBRATIONS</p>
-            <h2>Two days. One beautiful beginning.</h2>
-            <div className="events">
-              <article className="event-card">
-                <span>03</span>
-                <div><small>DECEMBER 2026</small><h3>Pre-Wedding Celebrations</h3><p>Join us as the festivities begin.</p></div>
-              </article>
-              <article className="event-card event-card--wedding">
-                <span>04</span>
-                <div><small>DECEMBER 2026</small><h3>The Wedding</h3><p>A day of vows, family, love and celebration.</p></div>
-              </article>
-            </div>
-          </section>
+      <section className="section section--paper">
+        <p className="eyebrow">THE CELEBRATIONS</p>
+        <h2>Two days. One beautiful beginning.</h2>
+        <div className="events">
+          <article className="event-card">
+            <span>03</span>
+            <div><small>DECEMBER 2026</small><h3>Pre-Wedding Celebrations</h3><p>Join us as the festivities begin.</p></div>
+          </article>
+          <article className="event-card event-card--wedding">
+            <span>04</span>
+            <div><small>DECEMBER 2026</small><h3>The Wedding</h3><p>A day of vows, family, love and celebration.</p></div>
+          </article>
+        </div>
+      </section>
 
-          <section className="section section--dark">
-            <p className="eyebrow">A LITTLE SECRET</p>
-            <h2>Reveal the date</h2>
-            <ScratchDate />
-          </section>
+      <section className="section section--dark">
+        <p className="eyebrow">A LITTLE SECRET</p>
+        <h2>Reveal the date</h2>
+        <ScratchDate />
+      </section>
 
-          <section className="section venue">
-            <p className="eyebrow">THE VENUE</p>
-            <h2>Raj Vilas</h2>
-            <p className="venue__place">Orchha, Madhya Pradesh</p>
-            <div className="venue__ornament">✦</div>
-            <a className="map-button" href={MAPS_URL} target="_blank" rel="noreferrer">Open in Google Maps <span>↗</span></a>
-          </section>
+      <section className="section venue">
+        <p className="eyebrow">THE VENUE</p>
+        <h2>Raj Vilas</h2>
+        <p className="venue__place">Orchha, Madhya Pradesh</p>
+        <div className="venue__ornament">✦</div>
+        <a className="map-button" href={MAPS_URL} target="_blank" rel="noreferrer">Open in Google Maps <span>↗</span></a>
+      </section>
 
-          <footer className="footer">
-            <p>WITH LOVE,</p>
-            <strong>Dr. Piyush &amp; Dr. Shini</strong>
-            <span>03 · 04 DECEMBER 2026</span>
-          </footer>
-        </main>
-      )}
-    </>
+      <footer className="footer">
+        <p>WITH LOVE,</p>
+        <strong>Dr. Piyush &amp; Dr. Shini</strong>
+        <span>03 · 04 DECEMBER 2026</span>
+      </footer>
+    </main>
   );
-
 }
 
 createRoot(document.getElementById("root")).render(<App />);
