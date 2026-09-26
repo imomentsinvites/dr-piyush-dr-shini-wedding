@@ -8,7 +8,7 @@ export function WelcomeSection() {
       className="relative px-6 py-20 md:py-28 overflow-hidden text-center"
       style={{
         background:
-          "linear-gradient(to bottom, #282E39 0%, #282E39 18%, #8e8990 55%, #F5E5E8 100%)",
+          "linear-gradient(to bottom, #282E39 0%, #282E39 65%, #6a646c 84%, #F5E5E8 100%)",
       }}
     >
       <div className="max-w-2xl mx-auto relative z-10">
@@ -16,19 +16,22 @@ export function WelcomeSection() {
         <div className="flex items-center justify-center gap-3 mb-6">
           <div
             className="h-px w-20"
-            style={{ background: "linear-gradient(to right, transparent, #c98a98)" }}
+            style={{ background: "linear-gradient(to right, transparent, #e5a4b1)" }}
           />
-          <HeartIcon size={14} className="text-[#c98a98]" />
+          <HeartIcon size={14} style={{ color: "#e5a4b1" }} />
           <div
             className="h-px w-20"
-            style={{ background: "linear-gradient(to left, transparent, #c98a98)" }}
+            style={{ background: "linear-gradient(to left, transparent, #e5a4b1)" }}
           />
         </div>
 
         {/* Message */}
         <p
-          className="font-calligraphic text-2xl md:text-3xl leading-relaxed italic text-[#fbe6ea] whitespace-pre-wrap break-words"
-          style={{ textShadow: "0 2px 14px rgba(0,0,0,0.55)" }}
+          className="font-calligraphic text-2xl md:text-3xl leading-relaxed italic whitespace-pre-wrap break-words"
+          style={{
+            color: "#FFF2F5",
+            textShadow: "0 2px 14px rgba(0,0,0,0.75)",
+          }}
         >
           {WEDDING_DATA.welcomeMessage}
         </p>
@@ -37,12 +40,12 @@ export function WelcomeSection() {
         <div className="flex items-center justify-center gap-3 mt-6">
           <div
             className="h-px w-20"
-            style={{ background: "linear-gradient(to right, transparent, #c98a98)" }}
+            style={{ background: "linear-gradient(to right, transparent, #e5a4b1)" }}
           />
-          <HeartIcon size={14} className="text-[#c98a98]" />
+          <HeartIcon size={14} style={{ color: "#e5a4b1" }} />
           <div
             className="h-px w-20"
-            style={{ background: "linear-gradient(to left, transparent, #c98a98)" }}
+            style={{ background: "linear-gradient(to left, transparent, #e5a4b1)" }}
           />
         </div>
       </div>

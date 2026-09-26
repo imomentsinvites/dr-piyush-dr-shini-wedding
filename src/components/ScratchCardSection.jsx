@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { OrnateDivider } from "./common/Icons";
+import { OrnateDivider, CalendarIcon, ChevronDownIcon } from "./common/Icons";
 import { WEDDING_DATA, SCRATCH_PALETTE } from "../constants/weddingData";
 import { triggerConfetti } from "../utils/confetti";
 import { openGoogleCalendar, downloadIcsFile } from "../utils/calendar";
@@ -139,7 +139,7 @@ export function ScratchCardSection() {
   };
 
   return (
-    <section className="py-16 md:py-24 px-6 cream-bg relative overflow-hidden text-center">
+    <section className="py-16 md:py-24 px-6 cream-bg relative text-center">
       {/* SVG Clip Path for Heart */}
       <svg width="0" height="0" className="absolute" aria-hidden="true">
         <defs>
@@ -250,52 +250,42 @@ export function ScratchCardSection() {
           </svg>
         </div>
 
-        {/* Save The Date Button with Dropdown */}
-        <div className="relative inline-block mt-4 text-center">
+        {/* Save The Date Button & Side-by-Side Calendar Options */}
+        <div className="relative mt-4 flex flex-col items-center justify-center text-center w-full">
           <button
             onClick={() => setCalendarOpen(!calendarOpen)}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-display text-sm tracking-wider uppercase font-semibold shadow-gold hover:opacity-95 transition-all transform active:scale-95 cursor-pointer"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
-            Save The Date
-            <svg
-              className={`w-3.5 h-3.5 transition-transform ${calendarOpen ? "rotate-180" : ""}`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-            </svg>
+            <CalendarIcon className="w-4 h-4" />
+            <span>Save The Date</span>
+            <ChevronDownIcon
+              className={`w-3.5 h-3.5 transition-transform duration-300 ${calendarOpen ? "rotate-180" : ""}`}
+            />
           </button>
 
           {calendarOpen && (
-            <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-60 bg-card border border-primary/20 rounded-xl shadow-elegant p-2 z-30 text-left">
+            <div className="mt-3.5 w-full max-w-sm grid grid-cols-2 gap-2.5 px-2 py-2">
               <button
+                type="button"
                 onClick={() => {
                   openGoogleCalendar();
                   setCalendarOpen(false);
                 }}
-                className="w-full text-left px-4 py-2.5 text-xs font-display font-medium text-foreground hover:bg-primary/10 rounded-lg flex items-center gap-2.5 transition-colors cursor-pointer"
+                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-card border border-primary/30 shadow-elegant hover:bg-primary/10 transition-all text-xs font-display font-medium text-foreground cursor-pointer active:scale-95"
               >
-                <span className="w-2 h-2 rounded-full bg-primary" />
-                Add to Google Calendar
+                <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
+                <span className="whitespace-nowrap">Google Calendar</span>
               </button>
               <button
+                type="button"
                 onClick={() => {
                   downloadIcsFile();
                   setCalendarOpen(false);
                 }}
-                className="w-full text-left px-4 py-2.5 text-xs font-display font-medium text-foreground hover:bg-primary/10 rounded-lg flex items-center gap-2.5 transition-colors cursor-pointer"
+                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-card border border-primary/30 shadow-elegant hover:bg-primary/10 transition-all text-xs font-display font-medium text-foreground cursor-pointer active:scale-95"
               >
-                <span className="w-2 h-2 rounded-full bg-primary" />
-                Apple Calendar / Outlook (.ics)
+                <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
+                <span className="whitespace-nowrap">Apple / Outlook</span>
               </button>
             </div>
           )}

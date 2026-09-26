@@ -110,7 +110,7 @@ export function HeroSection({ isVideoPlaying, onStartPlayback }) {
         </p>
 
         {/* 3. Divider with Center Heart */}
-        <div className="my-2.5 flex items-center justify-center gap-3">
+        <div className="mt-3 mb-6 sm:mb-8 flex items-center justify-center gap-3">
           <div
             className="h-px w-16"
             style={{ backgroundColor: "rgba(245,230,224,0.45)" }}
@@ -127,11 +127,13 @@ export function HeroSection({ isVideoPlaying, onStartPlayback }) {
 
         {/* 4. Groom Name in 'Great Vibes' */}
         <h1
-          className="leading-none font-normal"
+          className="font-normal"
           style={{
             fontFamily: "'Great Vibes', 'Dancing Script', cursive",
             color: "#f5e6e0",
             fontSize: "clamp(3.2rem, 12vw, 4.2rem)",
+            lineHeight: 1.15,
+            paddingTop: "0.35rem",
             textShadow: "0 2px 14px rgba(0,0,0,0.75)",
           }}
         >
