@@ -23,14 +23,14 @@ export function VenueSection() {
         {/* Embedded Google Map */}
         <div className="max-w-xl mx-auto rounded-2xl overflow-hidden shadow-elegant border border-border mb-8">
           <iframe
-            src="https://maps.app.goo.gl/zGerQX6HYPra1P3HA"
+            src="https://maps.google.com/maps?q=Pooja+Hospital+YOUR_CITY&z=15&output=embed"
             width="100%"
             height="300"
             style={{ border: 0 }}
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Raj Vilas Venue Map"
+            title="Pooja Hospital Venue Map"
           />
         </div>
 
@@ -43,6 +43,7 @@ export function VenueSection() {
           <span>View on Google Maps</span>
           <ExternalLinkIcon className="w-4 h-4" />
         </a>
+        </br>
         <div className="text-center mb-8">
           <p className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-1">
             {WEDDING_DATA.venueName2}

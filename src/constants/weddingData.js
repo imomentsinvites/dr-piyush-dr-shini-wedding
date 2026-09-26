@@ -9,7 +9,7 @@ export const WEDDING_DATA = {
   weddingDateFormatted: "1 DECEMBER 2026",
   weddingDayOfWeek: "TUESDAY",
   weddingTimeFormatted: "AT 5:00 PM",
-  targetTimestamp: new Date("2026-12-04T19:00:00+05:30").getTime(),
+  targetTimestamp: new Date("2026-12-01T17:00:00+05:30").getTime(),
   venueName1: "Pooja Hospital",
   venueAddress1: "Narnaul, Haryana",
   googleMapsUrl1: "https://maps.app.goo.gl/zGerQX6HYPra1P3HA",
