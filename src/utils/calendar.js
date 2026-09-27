@@ -1,6 +1,6 @@
 export function openGoogleCalendar() {
   const title = encodeURIComponent("Wedding of Dr. Piyush & Dr. Shini");
-  const dates = "20261204T133000Z/20261204T183000Z";
+  const dates = "20261201T133000Z/20261201T183000Z";
   const details = encodeURIComponent(
     "Wedding celebrations of Dr. Piyush & Dr. Shini at Raj Vilas, Orchha, Madhya Pradesh."
   );
@@ -18,10 +18,10 @@ export function downloadIcsFile() {
     "PRODID:-//Dr Piyush & Dr Shini Wedding//EN",
     "CALSCALE:GREGORIAN",
     "BEGIN:VEVENT",
-    "UID:wedding-piyush-shini-20261204@wedding.com",
+    "UID:wedding-piyush-shini-20261201@wedding.com",
     "DTSTAMP:20260926T000000Z",
-    "DTSTART:20261204T133000Z",
-    "DTEND:20261204T183000Z",
+    "DTSTART:20261201T133000Z",
+    "DTEND:20261201T183000Z",
     "SUMMARY:Wedding of Dr. Piyush & Dr. Shini",
     "DESCRIPTION:Wedding celebrations of Dr. Piyush & Dr. Shini at Raj Vilas, Orchha.",
     "LOCATION:Raj Vilas, Orchha, Madhya Pradesh",

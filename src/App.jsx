@@ -73,13 +73,6 @@ export default function App() {
 
       {/* Mobile Frame Container (Strictly Mobile Viewport on every screen, matching photo) */}
       <main className="mobile-phone-frame">
-        {/* Phone Top Speaker / Camera Notch on desktop */}
-        <div className="hidden md:flex absolute top-2 inset-x-0 justify-center z-50 pointer-events-none">
-          <div className="w-24 h-4 bg-[#140d10] rounded-full border border-white/5 flex items-center justify-end pr-3">
-            <div className="w-2 h-2 rounded-full bg-[#24171d]" />
-          </div>
-        </div>
-
         {/* Damask Texture Overlay inside the invitation */}
         <DamaskPatternBackground />
 

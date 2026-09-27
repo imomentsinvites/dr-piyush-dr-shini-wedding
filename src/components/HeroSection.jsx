@@ -19,7 +19,7 @@ export function HeroSection({ isVideoPlaying, onStartPlayback }) {
     const video = videoRef.current;
     if (!video) return;
     if (isVideoPlaying) {
-      video.play().catch(() => {});
+      video.play().catch(() => { });
       // Fallback timer for 8 seconds (0:08)
       const timer = setTimeout(() => {
         setShowOverlay(true);
@@ -42,7 +42,7 @@ export function HeroSection({ isVideoPlaying, onStartPlayback }) {
     if (video) {
       video.src = `${assetBase}assets/background.mp4`;
       video.loop = true;
-      video.play().catch(() => {});
+      video.play().catch(() => { });
     }
   };
 
@@ -70,9 +70,8 @@ export function HeroSection({ isVideoPlaying, onStartPlayback }) {
 
       {/* Cinematic Vignette Overlay matching reference */}
       <div
-        className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${
-          showOverlay ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${showOverlay ? "opacity-100" : "opacity-0"
+          }`}
         style={{
           background:
             "linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.55) 100%)",
@@ -81,16 +80,15 @@ export function HeroSection({ isVideoPlaying, onStartPlayback }) {
 
       {/* Opened Couple Names Overlay - Appears at time 0.08 */}
       <div
-        className={`relative z-10 flex w-full flex-col items-center justify-center px-6 text-center transition-all duration-1000 transform ${
-          showOverlay
+        className={`relative z-10 flex w-full flex-col items-center justify-center px-4 sm:px-6 text-center transition-all duration-1000 transform ${showOverlay
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-6 pointer-events-none"
-        }`}
+          }`}
       >
         {/* 1. Top Heart Icon */}
-        <div className="mb-3">
+        <div className="mb-2">
           <HeartIcon
-            size={26}
+            size={24}
             className="mx-auto"
             style={{ color: "#f5e6e0" }}
           />
@@ -98,11 +96,11 @@ export function HeroSection({ isVideoPlaying, onStartPlayback }) {
 
         {/* 2. Intro Message in 'Great Vibes' / Dancing Script */}
         <p
-          className="mb-2 whitespace-pre-line"
+          className="mb-1.5 whitespace-pre-line leading-tight"
           style={{
             fontFamily: "'Great Vibes', 'Dancing Script', cursive",
             color: "#f5e6e0",
-            fontSize: "26px",
+            fontSize: "clamp(22px, 5.5vw, 26px)",
             textShadow: "0 2px 12px rgba(0,0,0,0.75)",
           }}
         >
@@ -110,9 +108,9 @@ export function HeroSection({ isVideoPlaying, onStartPlayback }) {
         </p>
 
         {/* 3. Divider with Center Heart */}
-        <div className="mt-3 mb-6 sm:mb-8 flex items-center justify-center gap-3">
+        <div className="mt-1.5 mb-3 sm:mb-4 flex items-center justify-center gap-2.5">
           <div
-            className="h-px w-16"
+            className="h-px w-14"
             style={{ backgroundColor: "rgba(245,230,224,0.45)" }}
           />
           <HeartIcon
@@ -120,7 +118,7 @@ export function HeroSection({ isVideoPlaying, onStartPlayback }) {
             style={{ color: "#f5e6e0" }}
           />
           <div
-            className="h-px w-16"
+            className="h-px w-14"
             style={{ backgroundColor: "rgba(245,230,224,0.45)" }}
           />
         </div>
@@ -131,26 +129,43 @@ export function HeroSection({ isVideoPlaying, onStartPlayback }) {
           style={{
             fontFamily: "'Great Vibes', 'Dancing Script', cursive",
             color: "#f5e6e0",
-            fontSize: "clamp(3.2rem, 12vw, 4.2rem)",
-            lineHeight: 1.15,
-            paddingTop: "0.35rem",
+            fontSize: "clamp(2.6rem, 9.5vw, 3.6rem)",
+            lineHeight: 1.1,
+            paddingTop: "0.2rem",
             textShadow: "0 2px 14px rgba(0,0,0,0.75)",
           }}
         >
           {WEDDING_DATA.groom}
         </h1>
 
-        {/* 5. Ampersand in 'Great Vibes' */}
+        {/* Groom Parents */}
+        {WEDDING_DATA.groomParents && (
+          <p
+            className="mt-0.5 mb-1.5 font-display tracking-wide"
+            style={{
+              fontFamily: "'Cormorant Garamond', 'Playfair Display', serif",
+              color: "rgba(245, 230, 224, 0.92)",
+              fontSize: "clamp(0.9rem, 3.2vw, 1.08rem)",
+              letterSpacing: "0.025em",
+              textShadow: "0 2px 10px rgba(0,0,0,0.8)",
+              fontWeight: 500,
+            }}
+          >
+            {WEDDING_DATA.groomParents}
+          </p>
+        )}
+
+        {/* 5. With in 'Great Vibes' */}
         <p
-          className="my-1"
+          className="my-0.5"
           style={{
             fontFamily: "'Great Vibes', 'Dancing Script', cursive",
             color: "rgba(245,230,224,0.85)",
-            fontSize: "28px",
+            fontSize: "clamp(20px, 5vw, 25px)",
             textShadow: "0 2px 10px rgba(0,0,0,0.6)",
           }}
         >
-          &amp;
+          {WEDDING_DATA.withText || "With"}
         </p>
 
         {/* 6. Bride Name in 'Great Vibes' */}
@@ -159,12 +174,30 @@ export function HeroSection({ isVideoPlaying, onStartPlayback }) {
           style={{
             fontFamily: "'Great Vibes', 'Dancing Script', cursive",
             color: "#f5e6e0",
-            fontSize: "clamp(3.2rem, 12vw, 4.2rem)",
+            fontSize: "clamp(2.6rem, 9.5vw, 3.6rem)",
+            lineHeight: 1.1,
             textShadow: "0 2px 14px rgba(0,0,0,0.75)",
           }}
         >
           {WEDDING_DATA.bride}
         </h1>
+
+        {/* Bride Parents */}
+        {WEDDING_DATA.brideParents && (
+          <p
+            className="mt-0.5 font-display tracking-wide"
+            style={{
+              fontFamily: "'Cormorant Garamond', 'Playfair Display', serif",
+              color: "rgba(245, 230, 224, 0.92)",
+              fontSize: "clamp(0.9rem, 3.2vw, 1.08rem)",
+              letterSpacing: "0.025em",
+              textShadow: "0 2px 10px rgba(0,0,0,0.8)",
+              fontWeight: 500,
+            }}
+          >
+            {WEDDING_DATA.brideParents}
+          </p>
+        )}
       </div>
 
       {/* Unopened hint at bottom of envelope screen */}

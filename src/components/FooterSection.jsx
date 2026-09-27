@@ -21,7 +21,7 @@ export function FooterSection() {
         </p>
 
         <h3 className="font-dancing text-4xl md:text-5xl text-primary mt-2">
-          {WEDDING_DATA.familyNameSummary}
+          {"Dr. Usha,\nDr.Dinesh Sharma"} &amp; {"Kaushik Family"}
         </h3>
 
         <p className="text-xs md:text-sm tracking-widest text-muted-foreground uppercase font-display mt-3">

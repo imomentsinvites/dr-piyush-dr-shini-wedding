@@ -5493,6 +5493,14 @@ html, body {
   margin-bottom: -4px;
 }
 
+.timeline-card-col {
+  padding-bottom: 34px;
+}
+
+.timeline-card-col.last-item {
+  padding-bottom: 10px;
+}
+
 /* WhatsApp Integration Styles */
 .whatsapp-btn {
   background-color: #25D366;

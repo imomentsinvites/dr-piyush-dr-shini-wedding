@@ -189,3 +189,55 @@ export function WhatsAppIcon({ className = "w-5 h-5", size = 20 }) {
     </svg>
   );
 }
+
+export function BusIcon({ className = "w-5 h-5", size = 20 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      className={className}
+    >
+      <rect x="3" y="4" width="18" height="15" rx="3" strokeWidth="1.8" />
+      <path d="M3 11h18" strokeWidth="1.8" />
+      <circle cx="7" cy="15" r="1.5" fill="currentColor" />
+      <circle cx="17" cy="15" r="1.5" fill="currentColor" />
+      <path d="M5 19v2M19 19v2" strokeWidth="2" strokeLinecap="round" />
+      <path d="M7 7h10" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function NavigationIcon({ className = "w-4 h-4" }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+      />
+    </svg>
+  );
+}
+
+export function UtensilsIcon({ className = "w-3.5 h-3.5" }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M3 2v7c0 1.1.9 2 2 2h0c1.1 0 2-.9 2-2V2" />
+      <path d="M5 2v20" />
+      <path d="M19 2v20" />
+      <path d="M19 2c-2 0-3 1.5-3 4v5h3" />
+    </svg>
+  );
+}

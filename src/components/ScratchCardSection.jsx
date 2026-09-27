@@ -195,12 +195,60 @@ export function ScratchCardSection() {
                 >
                   You're Invited!
                 </p>
-                <p
-                  className="font-display text-lg sm:text-xl font-bold tracking-wider mt-1"
-                  style={{ color: SCRATCH_PALETTE.dateColor }}
-                >
-                  {WEDDING_DATA.weddingDateFormatted}
-                </p>
+                {(() => {
+                  const dateMatch = WEDDING_DATA.weddingDateFormatted.match(/^(\d+)(ST|ND|RD|TH)?\s+(.+)$/i);
+                  const dayNum = dateMatch ? dateMatch[1] : "";
+                  const daySuffix = dateMatch ? dateMatch[2] : "";
+                  const restOfDate = dateMatch ? dateMatch[3] : WEDDING_DATA.weddingDateFormatted;
+
+                  return dayNum ? (
+                    <div
+                      className="font-display font-bold mt-0.5 mb-1 flex items-baseline justify-center gap-1.5"
+                      style={{ color: SCRATCH_PALETTE.dateColor }}
+                    >
+                      <span
+                        className="font-extrabold"
+                        style={{
+                          fontSize: "clamp(2.1rem, 8.5vw, 2.65rem)",
+                          lineHeight: 1,
+                          color: SCRATCH_PALETTE.dateColor,
+                          textShadow: "0 1px 3px rgba(74, 21, 37, 0.2)",
+                        }}
+                      >
+                        {dayNum}
+                        {daySuffix && (
+                          <span
+                            style={{
+                              fontSize: "0.48em",
+                              verticalAlign: "super",
+                              marginLeft: "1px",
+                              fontWeight: 700,
+                            }}
+                          >
+                            {daySuffix}
+                          </span>
+                        )}
+                      </span>
+                      <span
+                        className="font-bold tracking-wider uppercase"
+                        style={{
+                          fontSize: "clamp(1.02rem, 3.8vw, 1.25rem)",
+                          letterSpacing: "0.06em",
+                          lineHeight: 1,
+                        }}
+                      >
+                        {restOfDate}
+                      </span>
+                    </div>
+                  ) : (
+                    <p
+                      className="font-display text-lg sm:text-xl font-bold tracking-wider mt-1"
+                      style={{ color: SCRATCH_PALETTE.dateColor }}
+                    >
+                      {WEDDING_DATA.weddingDateFormatted}
+                    </p>
+                  );
+                })()}
                 <p
                   className="font-calligraphic text-base sm:text-lg font-bold tracking-widest"
                   style={{ color: SCRATCH_PALETTE.dayColor }}
