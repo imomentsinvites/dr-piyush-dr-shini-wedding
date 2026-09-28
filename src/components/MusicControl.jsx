@@ -17,7 +17,7 @@ export function MusicControl({
     }
     const audio = audioRef.current;
     if (!audio) return;
-    audio.volume = 0.5;
+    audio.volume = 0;
     if (playing) {
       audio.pause();
       setPlaying(false);
