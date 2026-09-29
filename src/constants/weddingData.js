@@ -1,9 +1,9 @@
 export const WEDDING_DATA = {
   groom: "Dr. Piyush",
-  groomParents: "S/o Dr. Usha & Dr. Dinesh Sharma",
+  groomParents: "G.S/o Lt. Chander Kiran & Lt. Kishan Lal Sharma",
   bride: "Dr. Shini",
-  brideParents: "D/o Lt. Mrs Anju & Mr. Anuraag Choubey",
-  introMessage: "We are honored to welcome you to the\nWedding ceremony of our beloved son",
+  brideParents: "D/o Lt. Mrs Anju & Mr. Anurag Choubey",
+  introMessage: "Dr. Usha & Dr. Dinesh Sharma invite you to the\nWedding ceremony of their beloved son",
   withText: "With",
   togetherText: "Together with our families & friends",
   requestText: "REQUEST THE HONOUR OF YOUR PRESENCE",
